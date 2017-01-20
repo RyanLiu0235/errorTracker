@@ -5,17 +5,15 @@
  * @author       emitremmus0235@163.com
  */
 
-var utils = {
-  getType: function(obj) {
-    return regs.(Object.prototype.toString.call(obj))[1];
-  }
-};
-
-var regs = {
-  obj: /^\[object\s(.+?)\]$/
-};
-
 (function(window, $, undefined) {
+  var regs = {};
+
+  var utils = {
+    getType: function(obj) {
+      return Object.prototype.toString.call(obj).split(' ')[1];
+    }
+  };
+
   function Tracker() {
 
   }
@@ -40,9 +38,9 @@ var regs = {
     }
   }
 
-  if (typeof exports !== "undefined") {
-    exports.errorTracker = new Tracker;
+  if (!window.errorTracker) {
+    window.errorTracker = Tracker;
   } else {
-    return new Tracker();
+    console.error('errorTracker已注册，初始化失败');
   }
 })(window, jQuery);

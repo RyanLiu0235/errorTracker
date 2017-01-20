@@ -1,0 +1,24 @@
+{
+  "name": "error-tracker",
+  "version": "1.0.0",
+  "description": "检测页面错误，收集并上报",
+  "scripts": {
+    "start": "gulp dev"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stop2stare/errorTracker.git"
+  },
+  "author": "liucheng",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/stop2stare/errorTracker/issues"
+  },
+  "homepage": "https://github.com/stop2stare/errorTracker#readme",
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-connect": "^5.0.0",
+    "gulp-uglify": "^2.0.0",
+    "pump": "^1.0.2"
+  }
+}
