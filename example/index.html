@@ -7,23 +7,28 @@
 </head>
 
 <body>
-	<script src="//cdn.bootcss.com/jquery/1.8.3/jquery.min.js"></script>
-	<script src="../src/errorTracker.js"></script>
+  <script src="//cdn.bootcss.com/jquery/1.8.3/jquery.min.js"></script>
+  <script src="../src/errorTracker.js"></script>
   <script type="text/javascript">
-  	var tracker = new errorTracker();
-  	tracker.watchSyntaxError();
-  	tracker.watchAjaxFailure();
+  var uid = '9809128';
+  var tracker = new errorTracker({
+    customizeParams: {
+      uid: uid
+    }
+  });
+  tracker.watchSyntaxError();
+  tracker.watchAjaxFailure();
   </script>
-	<script src="./test.js"></script>
-	<script type="text/javascript">
-		$.ajax({
-			url: '/a',
-			method: 'GET',
-			success: function() {
+  <script src="./test.js"></script>
+  <script type="text/javascript">
+  $.ajax({
+    url: '/a',
+    method: 'GET',
+    success: function() {
 
-			}
-		})
-	</script>
+    }
+  })
+  </script>
 </body>
 
 </html>

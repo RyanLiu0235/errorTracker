@@ -12,11 +12,22 @@ var errorTracker = (function(window, $, undefined) {
   var utils = {
     getType: function(obj) {
       return Object.prototype.toString.call(obj);
+    },
+    encodeParams: function(params) {
+      var arr = [],
+        o;
+      for (o in params) {
+        if (params.hasOwnProperty(o)) {
+          arr.push(o + '=' + encodeURIComponent(params[o]));
+        }
+      }
+      return arr;
     }
   };
 
   var option = {
     reportUrl: 'http://www.someurl.com/somepic.gif',
+    customizeParams: {},
     errorHandler: function() {}
   };
 
@@ -30,13 +41,12 @@ var errorTracker = (function(window, $, undefined) {
     }
     var img = new Image(),
       arr = ['user_agent=' + ua],
+      _params = Tracker.opts.customizeParams,
+      _url = Tracker.opts.reportUrl,
       o;
 
-    for (o in params) {
-      if (params.hasOwnProperty(o)) {
-        arr.push(o + '=' + encodeURIComponent(params[o]));
-      }
-    }
+    arr = arr.concat(utils.encodeParams($.extend({}, params, _params)));
+
     img.src = Tracker.opts.reportUrl + '?' + arr.join('&');
 
     img.onload = function() {
