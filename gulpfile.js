@@ -14,11 +14,18 @@ gulp.task('compress', function(cb) {
 });
 
 gulp.task('connect', function() {
-	connect.server({
-		livereload: true,
-		port: 3300,
-		root: './'
-	});
+  connect.server({
+    livereload: true,
+    port: 3300,
+    root: './'
+  });
+});
+gulp.task('testServer', function() {
+  connect.server({
+    livereload: true,
+    port: 3400,
+    root: './testServer'
+  });
 });
 
 gulp.task('html', function () {
@@ -30,4 +37,4 @@ gulp.task('watch', function () {
   gulp.watch(['./example/*.html'], ['html']);
 });
 
-gulp.task('dev', ['connect', 'watch']);
+gulp.task('dev', ['connect', 'watch', 'testServer']);
