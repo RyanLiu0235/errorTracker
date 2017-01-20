@@ -12,8 +12,18 @@
   <script type="text/javascript">
   	var tracker = new errorTracker();
   	tracker.watchSyntaxError();
+  	tracker.watchAjaxFailure();
   </script>
 	<script src="./test.js"></script>
+	<script type="text/javascript">
+		$.ajax({
+			url: '/a',
+			method: 'GET',
+			success: function() {
+
+			}
+		})
+	</script>
 </body>
 
 </html>
