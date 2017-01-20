@@ -5,42 +5,67 @@
  * @author       emitremmus0235@163.com
  */
 
-(function(window, $, undefined) {
+var errorTracker = (function(window, $, undefined) {
+  var ua = window.navigator.userAgent;
   var regs = {};
 
   var utils = {
     getType: function(obj) {
-      return Object.prototype.toString.call(obj).split(' ')[1];
+      return Object.prototype.toString.call(obj);
     }
   };
 
-  function Tracker() {
+  var option = {
+    reportUrl: 'http://www.someurl.com/somepic.gif',
+    errorHandler: function() {}
+  };
 
+  function Tracker(opts) {
+    Tracker.opts = $.extend({}, option, opts);
   }
 
-  Tracker.prototype.reporter = function(params) {
-    if (utils.getType(params) !== 'Object') {
-      throw new Error('reporter expect an Object as auguments but got ' + utils.getType(params));
+  // 错误栈，默认五分钟内重复
+  Tracker.errorStack = [];
+
+  Tracker.reporter = function(params) {
+    if (utils.getType(params) !== '[object Object]') {
+      throw new Error('reporter expect an Object as auguments');
     }
     var img = new Image(),
-      o, arr;
-    // var paramKeys = ['version', 'crash_time', 'mid', 'user_agent', 'request_url', 'error_msg', 'http_code', 'error_code'];
+      arr = [],
+      o;
 
     for (o in params) {
       if (params.hasOwnProperty(o)) {
-        arr.push(o + encodeURIComponent(params[o]));
+        arr.push(o + '=' + encodeURIComponent(params[o]));
       }
     }
-    img.src = 'http://www.someurl.com/somepic.gif?' + arr.join('&');
+    img.src = Tracker.opts.reportUrl + '?' + arr.join('&');
 
     img.onload = function() {
       console.log('错误已上报！');
     }
   }
 
-  if (!window.errorTracker) {
-    window.errorTracker = Tracker;
-  } else {
-    console.error('errorTracker已注册，初始化失败');
+  Tracker.prototype.watchSyntaxError = function() {
+    var _error = window.onerror;
+
+    window.onerror = function(message, source, line, col, error) {
+      Tracker.reporter({
+        msg: message,
+        url: source,
+        line: line,
+        col: col
+      });
+
+      // 执行原先的onerror方法
+      _error && error.apply(window, arguments);
+    }
   }
+
+  return Tracker;
 })(window, jQuery);
+
+if (typeof module !== 'undefined') {
+  module.exports = errorTracker;
+}
